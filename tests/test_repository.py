@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import struct
 import unittest
 
 ROOT = Path(__file__).parents[1]
@@ -15,6 +16,8 @@ class RepositoryTests(unittest.TestCase):
         required = (
             ROOT / "hacs.json",
             INTEGRATION / "manifest.json",
+            INTEGRATION / "brand" / "icon.png",
+            INTEGRATION / "brand" / "icon@2x.png",
             INTEGRATION / "strings.json",
             INTEGRATION / "translations" / "es.json",
         )
@@ -32,9 +35,23 @@ class RepositoryTests(unittest.TestCase):
             (INTEGRATION / "manifest.json").read_text(encoding="utf-8")
         )
         self.assertEqual(manifest["domain"], "appletv_homekit_hacs")
-        self.assertEqual(manifest["version"], "0.2.0")
+        self.assertEqual(manifest["version"], "0.2.1")
         self.assertIn("apple_tv", manifest["dependencies"])
         self.assertIn("homekit", manifest["dependencies"])
+
+    def test_brand_images_match_home_assistant_dimensions(self) -> None:
+        expected_dimensions = {
+            "icon.png": (256, 256),
+            "icon@2x.png": (512, 512),
+        }
+        brand = INTEGRATION / "brand"
+        for filename, dimensions in expected_dimensions.items():
+            with self.subTest(filename=filename):
+                image = (brand / filename).read_bytes()
+                self.assertEqual(image[:8], b"\x89PNG\r\n\x1a\n")
+                self.assertEqual(
+                    struct.unpack(">II", image[16:24]), dimensions
+                )
 
 
 if __name__ == "__main__":
