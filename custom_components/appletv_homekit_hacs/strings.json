@@ -1,0 +1,22 @@
+{
+  "title": "Apple TV HomeKit Enhanced",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Select an Apple TV",
+        "description": "Choose a media player created by Home Assistant's official Apple TV integration.",
+        "data": {
+          "media_player_entity_id": "Apple TV media player"
+        }
+      }
+    },
+    "error": {
+      "entity_not_found": "The selected entity is not registered.",
+      "not_apple_tv": "Select a media player from the official Apple TV integration."
+    },
+    "abort": {
+      "already_configured": "This Apple TV is already configured."
+    }
+  }
+}
+

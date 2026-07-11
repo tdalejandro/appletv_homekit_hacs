@@ -1,0 +1,12 @@
+{
+  "domain": "appletv_homekit_hacs",
+  "name": "Apple TV HomeKit Enhanced",
+  "codeowners": ["@tdalejandro"],
+  "config_flow": true,
+  "dependencies": ["apple_tv"],
+  "documentation": "https://github.com/tdalejandro/appletv_homekit_hacs",
+  "integration_type": "helper",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/tdalejandro/appletv_homekit_hacs/issues",
+  "version": "0.1.0"
+}

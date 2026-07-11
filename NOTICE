@@ -1,0 +1,10 @@
+Apple TV HomeKit Enhanced is an independent Home Assistant community project.
+
+The project is inspired by maxileith/homebridge-appletv-enhanced, licensed
+under the MIT License. The MVP implementation is original Python code and does
+not copy the Homebridge plugin source.
+
+Apple TV communication is provided by Home Assistant's official Apple TV
+integration and its pyatv dependency. Apple, Apple TV, HomeKit and tvOS are
+trademarks of Apple Inc. This project is not affiliated with Apple Inc.
+
