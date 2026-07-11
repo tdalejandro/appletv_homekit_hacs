@@ -8,18 +8,27 @@ official Apple TV integration. It reuses the official `media_player` and
 `remote` entities instead of creating a second `pyatv` connection.
 
 > [!WARNING]
-> Version `0.1.0` is an MVP. Create a backup before installation.
+> Version `0.2.0` is still early. Create a backup before installation.
 
 ## Architecture
 
 - No duplicated Apple TV pairing or credentials.
 - No additional listener, web server, Node.js runtime or Python venv.
 - Protocol updates remain managed by Home Assistant Core.
+- Dedicated HomeKit QR codes are created through Home Assistant's official
+  HomeKit integration.
 - Removing this helper does not remove the official Apple TV device.
 
-## MVP features
+## Features
 
 - UI configuration for an official Apple TV `media_player`.
+- Dedicated HomeKit Television accessory per Apple TV, with its own QR code.
+- Apple TV apps are exposed as HomeKit TV inputs when the official integration
+  provides them in `source_list`.
+- HomeKit inputs include `Inicio` and `Cerrar Apps`.
+- `Cerrar Apps` runs the same blind launcher sweep used by
+  `homebridge-appletv-enhanced`: Home, Home, Left, then Up/Up per configured
+  app slot, then Home.
 - Sensors for playback, active app and media metadata.
 - Binary sensors for playback state and media type.
 - Remote command buttons for navigation, playback, skipping and volume.
@@ -50,16 +59,20 @@ Copy `custom_components/appletv_homekit_hacs` into the Home Assistant
 
 ## HomeKit
 
-Expose the official media player and desired enhanced entities through Home
-Assistant's
-[HomeKit Bridge integration](https://www.home-assistant.io/integrations/homekit/).
-The helper does not create a second HomeKit bridge.
+For new entries, the helper creates one official Home Assistant HomeKit
+accessory entry for the generated `HomeKit TV` media player. Home Assistant
+shows the QR/pairing notification and stores the pairing data.
+
+Existing `0.1.0` entries keep QR creation disabled until enabled in the
+integration options. Disabling QR creation later does not delete an existing
+HomeKit accessory, so pairing is preserved.
 
 ## Current limitations
 
 - Power state remains subject to the official integration and tvOS.
 - Volume depends on HomePod or HDMI-CEC; IR-only volume is not supported.
-- Command sequences, deep-link buttons and close-all-apps are planned.
+- `Cerrar Apps` is intentionally blind because tvOS does not expose a reliable
+  app switcher state through Home Assistant.
 - Reload the helper after renaming its selected source entity.
 
 ## Development checks

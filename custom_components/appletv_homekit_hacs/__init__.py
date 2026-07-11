@@ -7,7 +7,15 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import entity_registry as er
 
-from .const import APPLE_TV_DOMAIN, CONF_MEDIA_PLAYER_ENTITY_ID, PLATFORMS
+from .const import (
+    APPLE_TV_DOMAIN,
+    CONF_CLOSE_APPS_COUNT,
+    CONF_ENABLE_HOMEKIT_QR,
+    CONF_HOMEKIT_ENTRY_ID,
+    CONF_MEDIA_PLAYER_ENTITY_ID,
+    PLATFORMS,
+)
+from .helpers import DEFAULT_CLOSE_APPS_COUNT, clamp_close_apps_count
 from .runtime import AppleTVEnhancedConfigEntry, AppleTVEnhancedRuntimeData
 
 
@@ -29,8 +37,22 @@ async def async_setup_entry(
         media_player_entity_id=media_player_entity_id,
         remote_entity_id=_find_remote_entity_id(entity_registry, source_entity),
         source_unique_id=source_entry.unique_id if source_entry else None,
+        enable_homekit_qr=bool(
+            entry.options.get(
+                CONF_ENABLE_HOMEKIT_QR,
+                entry.data.get(CONF_ENABLE_HOMEKIT_QR, False),
+            )
+        ),
+        close_apps_count=clamp_close_apps_count(
+            entry.options.get(
+                CONF_CLOSE_APPS_COUNT,
+                entry.data.get(CONF_CLOSE_APPS_COUNT, DEFAULT_CLOSE_APPS_COUNT),
+            )
+        ),
+        homekit_entry_id=entry.data.get(CONF_HOMEKIT_ENTRY_ID),
     )
 
+    entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
@@ -40,6 +62,13 @@ async def async_unload_entry(
 ) -> bool:
     """Unload an Apple TV HomeKit Enhanced config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
+
+async def _async_update_listener(
+    hass: HomeAssistant, entry: AppleTVEnhancedConfigEntry
+) -> None:
+    """Reload the entry after options change."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 def _source_config_entry(

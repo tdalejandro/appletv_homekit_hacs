@@ -43,6 +43,42 @@ class PlaybackStateTests(unittest.TestCase):
         self.assertFalse(HELPERS.playback_state_matches(None, "idle"))
 
 
+class HomeKitSourceTests(unittest.TestCase):
+    """Verify app source composition for the HomeKit TV accessory."""
+
+    def test_launcher_actions_precede_apps(self) -> None:
+        self.assertEqual(
+            HELPERS.build_homekit_sources(["Netflix", "YouTube"]),
+            ("Inicio", "Cerrar Apps", "Netflix", "YouTube"),
+        )
+
+    def test_duplicate_sources_are_removed(self) -> None:
+        self.assertEqual(
+            HELPERS.build_homekit_sources(["Netflix", "Cerrar Apps", "Netflix"]),
+            ("Inicio", "Cerrar Apps", "Netflix"),
+        )
+
+    def test_maximum_sources_is_enforced(self) -> None:
+        sources = HELPERS.build_homekit_sources(
+            [f"App {index}" for index in range(100)], max_sources=5
+        )
+        self.assertEqual(len(sources), 5)
+
+
+class CloseAppsSequenceTests(unittest.TestCase):
+    """Verify the Homebridge-compatible close-apps sequence."""
+
+    def test_sequence_shape(self) -> None:
+        sequence = HELPERS.build_close_apps_sequence(5)
+        self.assertEqual(sequence[:3], (("home", 0.1), ("home", 0.8), ("left", 0.3)))
+        self.assertEqual(sequence[-1], ("home", 0.0))
+        self.assertEqual(len(sequence), 14)
+
+    def test_count_is_clamped(self) -> None:
+        self.assertEqual(HELPERS.clamp_close_apps_count(1), 5)
+        self.assertEqual(HELPERS.clamp_close_apps_count(99), 35)
+        self.assertEqual(HELPERS.clamp_close_apps_count("bad"), 15)
+
+
 if __name__ == "__main__":
     unittest.main()
-

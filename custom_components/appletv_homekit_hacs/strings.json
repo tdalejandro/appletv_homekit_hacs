@@ -6,7 +6,9 @@
         "title": "Select an Apple TV",
         "description": "Choose a media player created by Home Assistant's official Apple TV integration.",
         "data": {
-          "media_player_entity_id": "Apple TV media player"
+          "media_player_entity_id": "Apple TV media player",
+          "enable_homekit_qr": "Create a dedicated HomeKit QR accessory",
+          "close_apps_count": "Apps to close with Cerrar Apps"
         }
       }
     },
@@ -17,6 +19,17 @@
     "abort": {
       "already_configured": "This Apple TV is already configured."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Apple TV HomeKit Enhanced options",
+        "description": "Disabling QR creation does not remove an existing HomeKit accessory. Remove it from Home Assistant's HomeKit integration if needed.",
+        "data": {
+          "enable_homekit_qr": "Create a dedicated HomeKit QR accessory",
+          "close_apps_count": "Apps to close with Cerrar Apps"
+        }
+      }
+    }
   }
 }
-
