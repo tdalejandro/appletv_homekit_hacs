@@ -82,6 +82,22 @@ REMOTE_KEY_MEDIA_SERVICES = {
     KEY_PLAY_PAUSE: SERVICE_MEDIA_PLAY_PAUSE,
 }
 
+# Only advertise services implemented by this proxy. Mirroring every source
+# feature would expose controls such as browse, seek, repeat, and shuffle even
+# though this integration does not delegate those methods.
+FORWARDED_MEDIA_PLAYER_FEATURES = (
+    MediaPlayerEntityFeature.TURN_ON
+    | MediaPlayerEntityFeature.TURN_OFF
+    | MediaPlayerEntityFeature.PLAY
+    | MediaPlayerEntityFeature.PAUSE
+    | MediaPlayerEntityFeature.STOP
+    | MediaPlayerEntityFeature.NEXT_TRACK
+    | MediaPlayerEntityFeature.PREVIOUS_TRACK
+    | MediaPlayerEntityFeature.VOLUME_SET
+    | MediaPlayerEntityFeature.VOLUME_MUTE
+    | MediaPlayerEntityFeature.VOLUME_STEP
+)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -133,11 +149,13 @@ class AppleTVHomeKitMediaPlayer(AppleTVEnhancedEntity, MediaPlayerEntity):
 
     @property
     def supported_features(self) -> MediaPlayerEntityFeature:
-        """Mirror source features and always expose input selection."""
-        features = self._source_attr(ATTR_SUPPORTED_FEATURES, 0)
-        return (
-            MediaPlayerEntityFeature(features) | MediaPlayerEntityFeature.SELECT_SOURCE
+        """Expose only source capabilities implemented by this proxy."""
+        features = MediaPlayerEntityFeature(
+            self._source_attr(ATTR_SUPPORTED_FEATURES, 0)
         )
+        return (
+            features & FORWARDED_MEDIA_PLAYER_FEATURES
+        ) | MediaPlayerEntityFeature.SELECT_SOURCE
 
     @property
     def source(self) -> str | None:

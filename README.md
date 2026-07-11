@@ -8,7 +8,7 @@ official Apple TV integration. It reuses the official `media_player` and
 `remote` entities instead of creating a second `pyatv` connection.
 
 > [!WARNING]
-> Version `0.2.0` is still early. Create a backup before installation.
+> Version `0.2.1` is still early. Create a backup before installation.
 
 ## Architecture
 
@@ -23,6 +23,7 @@ official Apple TV integration. It reuses the official `media_player` and
 
 - UI configuration for an official Apple TV `media_player`.
 - Dedicated HomeKit Television accessory per Apple TV, with its own QR code.
+- Local integration branding for the Home Assistant UI (2026.3+).
 - Apple TV apps are exposed as HomeKit TV inputs when the official integration
   provides them in `source_list`.
 - HomeKit inputs include `Inicio` and `Cerrar Apps`.
