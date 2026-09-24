@@ -15,6 +15,7 @@ class AppleTVEnhancedRuntimeData:
     media_player_entity_id: str
     remote_entity_id: str | None
     source_unique_id: str | None
+    source_device_id: str | None = None
     enable_homekit_qr: bool = False
     close_apps_count: int = DEFAULT_CLOSE_APPS_COUNT
     homekit_entry_id: str | None = None

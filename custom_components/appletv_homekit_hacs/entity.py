@@ -8,7 +8,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_track_state_change_event
 
-from .const import APPLE_TV_DOMAIN, DOMAIN
+from .const import DOMAIN
 from .runtime import AppleTVEnhancedConfigEntry, AppleTVEnhancedRuntimeData
 
 
@@ -28,18 +28,19 @@ class AppleTVEnhancedEntity(Entity):
         self.runtime_data = runtime_data
         source_id = runtime_data.source_unique_id or runtime_data.media_player_entity_id
         self._attr_unique_id = f"{source_id}_{key}"
-        via_device = (
-            (APPLE_TV_DOMAIN, runtime_data.source_unique_id)
-            if runtime_data.source_unique_id
-            else None
-        )
-        self._attr_device_info = DeviceInfo(
+        device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             manufacturer="Open Home Community",
             model="Apple TV Enhanced helper",
             name=f"{entry.title} Enhanced",
-            via_device=via_device,
         )
+        # HA 2026.9 replaced `via_device` (a (domain, identifier) tuple) with
+        # `via_device_id`, the parent's device registry id. The old parameter only
+        # logs a warning at setup, but raises RuntimeError when an entity of this
+        # device is renamed, and is removed in HA 2027.8.
+        if runtime_data.source_device_id:
+            device_info["via_device_id"] = runtime_data.source_device_id
+        self._attr_device_info = device_info
 
     @override
     async def async_added_to_hass(self) -> None:

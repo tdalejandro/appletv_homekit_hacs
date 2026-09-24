@@ -37,6 +37,7 @@ async def async_setup_entry(
         media_player_entity_id=media_player_entity_id,
         remote_entity_id=_find_remote_entity_id(entity_registry, source_entity),
         source_unique_id=source_entry.unique_id if source_entry else None,
+        source_device_id=source_entity.device_id,
         enable_homekit_qr=bool(
             entry.options.get(
                 CONF_ENABLE_HOMEKIT_QR,
