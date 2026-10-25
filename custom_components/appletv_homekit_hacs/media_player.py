@@ -27,11 +27,13 @@ from homeassistant.components.media_player import (
     ATTR_INPUT_SOURCE_LIST,
     ATTR_MEDIA_VOLUME_LEVEL,
     ATTR_MEDIA_VOLUME_MUTED,
-    DOMAIN as MEDIA_PLAYER_DOMAIN,
     SERVICE_SELECT_SOURCE,
     MediaPlayerDeviceClass,
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
+)
+from homeassistant.components.media_player import (
+    DOMAIN as MEDIA_PLAYER_DOMAIN,
 )
 from homeassistant.const import (
     ATTR_ENTITY_ID,
@@ -165,7 +167,9 @@ class AppleTVHomeKitMediaPlayer(AppleTVEnhancedEntity, MediaPlayerEntity):
     @property
     def source_list(self) -> list[str]:
         """Expose launcher actions and Apple TV app list as HomeKit inputs."""
-        return list(build_homekit_sources(self._source_attr(ATTR_INPUT_SOURCE_LIST, [])))
+        return list(
+            build_homekit_sources(self._source_attr(ATTR_INPUT_SOURCE_LIST, []))
+        )
 
     @property
     def volume_level(self) -> float | None:

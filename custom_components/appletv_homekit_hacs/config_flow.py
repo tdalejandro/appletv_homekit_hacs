@@ -3,7 +3,6 @@
 from typing import Any, override
 
 import voluptuous as vol
-
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult, OptionsFlow
 from homeassistant.core import callback
 from homeassistant.helpers import entity_registry as er
@@ -77,9 +76,7 @@ class AppleTVHomeKitConfigFlow(ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_configured()
                 state = self.hass.states.get(entity_id)
                 title = (
-                    state.name
-                    if state
-                    else registry_entry.original_name or entity_id
+                    state.name if state else registry_entry.original_name or entity_id
                 )
                 data = {
                     **user_input,

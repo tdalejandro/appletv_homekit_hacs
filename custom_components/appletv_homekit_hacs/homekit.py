@@ -9,8 +9,10 @@ from homeassistant.components.homekit.const import (
     CONF_FILTER,
     CONF_HOMEKIT_MODE,
     DEFAULT_CONFIG_FLOW_PORT,
-    DOMAIN as HOMEKIT_DOMAIN,
     HOMEKIT_MODE_ACCESSORY,
+)
+from homeassistant.components.homekit.const import (
+    DOMAIN as HOMEKIT_DOMAIN,
 )
 from homeassistant.components.homekit.util import async_find_next_available_port
 from homeassistant.config_entries import ConfigEntry

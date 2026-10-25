@@ -73,4 +73,3 @@ class AppleTVEnhancedEntity(Entity):
             STATE_UNAVAILABLE,
             STATE_UNKNOWN,
         }
-

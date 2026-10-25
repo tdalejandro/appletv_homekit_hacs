@@ -109,4 +109,3 @@ class AppleTVEnhancedSensor(AppleTVEnhancedEntity, SensorEntity):
         if self.entity_description.key == "media_type":
             return normalized_media_type(value)
         return value
-
