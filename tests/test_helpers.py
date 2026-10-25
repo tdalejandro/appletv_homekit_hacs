@@ -1,8 +1,8 @@
 """Tests for pure Apple TV state mappings."""
 
 import importlib.util
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 HELPERS_PATH = (
     Path(__file__).parents[1]

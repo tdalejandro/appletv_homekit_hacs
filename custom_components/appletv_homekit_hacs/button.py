@@ -150,4 +150,3 @@ class AppleTVEnhancedButton(AppleTVEnhancedEntity, ButtonEntity):
             },
             blocking=True,
         )
-

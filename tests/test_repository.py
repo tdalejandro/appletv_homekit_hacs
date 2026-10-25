@@ -1,9 +1,9 @@
 """Repository-level validation tests."""
 
 import json
-from pathlib import Path
 import struct
 import unittest
+from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 INTEGRATION = ROOT / "custom_components" / "appletv_homekit_hacs"
@@ -50,9 +50,7 @@ class RepositoryTests(unittest.TestCase):
             with self.subTest(filename=filename):
                 image = (brand / filename).read_bytes()
                 self.assertEqual(image[:8], b"\x89PNG\r\n\x1a\n")
-                self.assertEqual(
-                    struct.unpack(">II", image[16:24]), dimensions
-                )
+                self.assertEqual(struct.unpack(">II", image[16:24]), dimensions)
 
 
 if __name__ == "__main__":
