@@ -19,6 +19,7 @@ class RepositoryTests(unittest.TestCase):
             INTEGRATION / "brand" / "icon.png",
             INTEGRATION / "brand" / "icon@2x.png",
             INTEGRATION / "strings.json",
+            INTEGRATION / "translations" / "en.json",
             INTEGRATION / "translations" / "es.json",
         )
         for path in required:
