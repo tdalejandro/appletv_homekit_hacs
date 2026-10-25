@@ -383,7 +383,12 @@ class AppleTVHomeKitMediaPlayer(AppleTVEnhancedEntity, MediaPlayerEntity):
 
     async def _async_close_apps(self) -> None:
         """Run the Homebridge-compatible close-apps sequence."""
-        async with self.runtime_data.close_apps_lock:
+        close_apps_lock = self.runtime_data.close_apps_lock
+        if close_apps_lock.locked():
+            _LOGGER.debug("Close apps already running, ignoring extra request")
+            return
+
+        async with close_apps_lock:
             for command, delay in build_close_apps_sequence(
                 self.runtime_data.close_apps_count
             ):
