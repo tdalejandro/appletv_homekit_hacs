@@ -53,6 +53,17 @@ async def async_setup_entry(
         homekit_entry_id=entry.data.get(CONF_HOMEKIT_ENTRY_ID),
     )
 
+    # Only options changes need a reload. Writing homekit_entry_id to entry.data
+    # also fires update listeners and would reload the entry mid-setup.
+    options_at_setup = dict(entry.options)
+
+    async def _async_update_listener(
+        hass: HomeAssistant, entry: AppleTVEnhancedConfigEntry
+    ) -> None:
+        """Reload the entry after options change."""
+        if dict(entry.options) != options_at_setup:
+            await hass.config_entries.async_reload(entry.entry_id)
+
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
@@ -63,13 +74,6 @@ async def async_unload_entry(
 ) -> bool:
     """Unload an Apple TV HomeKit Enhanced config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-
-
-async def _async_update_listener(
-    hass: HomeAssistant, entry: AppleTVEnhancedConfigEntry
-) -> None:
-    """Reload the entry after options change."""
-    await hass.config_entries.async_reload(entry.entry_id)
 
 
 def _source_config_entry(
