@@ -36,7 +36,7 @@ class RepositoryTests(unittest.TestCase):
             (INTEGRATION / "manifest.json").read_text(encoding="utf-8")
         )
         self.assertEqual(manifest["domain"], "appletv_homekit_hacs")
-        self.assertEqual(manifest["version"], "0.2.4")
+        self.assertEqual(manifest["version"], "0.2.5")
         self.assertIn("apple_tv", manifest["dependencies"])
         self.assertIn("homekit", manifest["dependencies"])
 

@@ -8,7 +8,7 @@ official Apple TV integration. It reuses the official `media_player` and
 `remote` entities instead of creating a second `pyatv` connection.
 
 > [!WARNING]
-> Version `0.2.4` is still early. Create a backup before installation.
+> Version `0.2.5` is still early. Create a backup before installation.
 
 ## Architecture
 
