@@ -8,7 +8,7 @@ official Apple TV integration. It reuses the official `media_player` and
 `remote` entities instead of creating a second `pyatv` connection.
 
 > [!WARNING]
-> Version `0.2.1` is still early. Create a backup before installation.
+> Version `0.2.4` is still early. Create a backup before installation.
 
 ## Architecture
 
@@ -37,7 +37,7 @@ official Apple TV integration. It reuses the official `media_player` and
 
 ## Requirements
 
-- Home Assistant `2026.7.0` or newer.
+- Home Assistant `2026.9.0` or newer.
 - The official
   [Apple TV integration](https://www.home-assistant.io/integrations/apple_tv/)
   configured and working.
